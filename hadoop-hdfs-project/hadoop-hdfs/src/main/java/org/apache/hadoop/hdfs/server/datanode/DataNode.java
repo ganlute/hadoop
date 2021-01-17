@@ -496,8 +496,10 @@ public class DataNode extends ReconfigurableBase
     this.socketFactory = NetUtils.getDefaultSocketFactory(conf);
 
     try {
+      // how to get hostName
       hostName = getHostName(conf);
       LOG.info("Configured hostname is {}", hostName);
+      // 这里面初始化了好多核心功能点的数据结构
       startDataNode(dataDirs, resources);
     } catch (IOException ie) {
       shutdown();
@@ -1411,7 +1413,7 @@ public class DataNode extends ReconfigurableBase
     }
 
     storage = new DataStorage();
-    
+
     // global DN settings
     registerMXBean();
     initDataXceiver();
@@ -2656,15 +2658,19 @@ public class DataNode extends ReconfigurableBase
    *  If this thread is specifically interrupted, it will stop waiting.
    */
   public void runDatanodeDaemon() throws IOException {
+    // blockPoolManager 是干嘛的？
     blockPoolManager.startAll();
 
     // start dataXceiveServer
+    // dataXceiverServer 是干嘛的？
     dataXceiverServer.start();
     if (localDataXceiverServer != null) {
       localDataXceiverServer.start();
     }
+    // ipcServer
     ipcServer.setTracer(tracer);
     ipcServer.start();
+    // 插件，这是个好东西？
     startPlugins(getConf());
   }
 
@@ -2692,11 +2698,13 @@ public class DataNode extends ReconfigurableBase
    * This must be run by invoking{@link DataNode#runDatanodeDaemon()} 
    * subsequently. 
    */
+  // resources 传进来的是 null
   public static DataNode instantiateDataNode(String args [], Configuration conf,
       SecureResources resources) throws IOException {
+    // 1、加载配置文件 和 参数
     if (conf == null)
       conf = new HdfsConfiguration();
-    
+
     if (args != null) {
       // parse generic hadoop options
       GenericOptionsParser hParser = new GenericOptionsParser(conf, args);
@@ -2707,10 +2715,16 @@ public class DataNode extends ReconfigurableBase
       printUsage(System.err);
       return null;
     }
+
+    // 2、加载DFS_DATANODE_DATA_DIR_KEY
+    // 初始化dataLocations-->异构存储
     Collection<StorageLocation> dataLocations = getStorageLocations(conf);
+    // 3、安全认证相关的初始化-->安全认证的逻辑是怎样的？
     UserGroupInformation.setConfiguration(conf);
     SecurityUtil.login(conf, DFS_DATANODE_KEYTAB_FILE_KEY,
         DFS_DATANODE_KERBEROS_PRINCIPAL_KEY, getHostName(conf));
+    // 4、makeInstance
+    // resources = null
     return makeInstance(dataLocations, conf, resources);
   }
 
@@ -2762,13 +2776,16 @@ public class DataNode extends ReconfigurableBase
 
   void join() {
     while (shouldRun) {
+      // 这里循环导致dataNode是个常驻进程
       try {
         blockPoolManager.joinAll();
+        // 如果namenode都挂了，dataNode就都挂了？
         if (blockPoolManager.getAllNamenodeThreads().size() == 0) {
           shouldRun = false;
         }
         // Terminate if shutdown is complete or 2 seconds after all BPs
         // are shutdown.
+        // 这里为啥要加个synchronized？
         synchronized(this) {
           wait(2000);
         }
@@ -2793,6 +2810,7 @@ public class DataNode extends ReconfigurableBase
   static DataNode makeInstance(Collection<StorageLocation> dataDirs,
       Configuration conf, SecureResources resources) throws IOException {
     List<StorageLocation> locations;
+    // storageLocationChecker --> 这是做什么的？
     StorageLocationChecker storageLocationChecker =
         new StorageLocationChecker(conf, new Timer());
     try {
@@ -2800,9 +2818,12 @@ public class DataNode extends ReconfigurableBase
     } catch (InterruptedException ie) {
       throw new IOException("Failed to instantiate DataNode", ie);
     }
+    // 初始化 DataNode 监控-->这里的逻辑？
     DefaultMetricsSystem.initialize("DataNode");
 
     assert locations.size() > 0 : "number of data directories should be > 0";
+
+    // 这里面才是核心初始化
     return new DataNode(conf, locations, storageLocationChecker, resources);
   }
 
@@ -2893,6 +2914,7 @@ public class DataNode extends ReconfigurableBase
     return blockPoolTokenSecretManager;
   }
 
+  // main函数调用过来
   public static void secureMain(String args[], SecureResources resources) {
     int errorCode = 0;
     try {
@@ -2917,6 +2939,7 @@ public class DataNode extends ReconfigurableBase
   }
   
   public static void main(String args[]) {
+    // 主函数
     if (DFSUtil.parseHelpArgument(args, DataNode.USAGE, System.out, true)) {
       System.exit(0);
     }

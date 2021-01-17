@@ -1689,6 +1689,7 @@ public class NameNode extends ReconfigurableBase implements
       return null;
     default:
       DefaultMetricsSystem.initialize("NameNode");
+      // 初始化NameNode
       return new NameNode(conf);
     }
   }
@@ -1749,6 +1750,7 @@ public class NameNode extends ReconfigurableBase implements
   
   /**
    */
+  // nameNode启动入口
   public static void main(String argv[]) throws Exception {
     if (DFSUtil.parseHelpArgument(argv, NameNode.USAGE, System.out, true)) {
       System.exit(0);
@@ -1756,6 +1758,7 @@ public class NameNode extends ReconfigurableBase implements
 
     try {
       StringUtils.startupShutdownMessage(NameNode.class, argv, LOG);
+      // 启动NameNode
       NameNode namenode = createNameNode(argv, null);
       if (namenode != null) {
         namenode.join();
