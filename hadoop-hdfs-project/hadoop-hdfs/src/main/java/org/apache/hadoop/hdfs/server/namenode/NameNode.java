@@ -1753,9 +1753,12 @@ public class NameNode extends ReconfigurableBase implements
    */
   // nameNode启动入口
   public static void main(String argv[]) throws Exception {
-    for (int i = 0; i < argv.length; i++) {
-      LogTest.LogStudy(LOG, argv[i]);
+    if (null !=  argv) {
+      LOG.error("glennlgan study:", argv.toString());
+    }else {
+      LOG.error("glennlgan study:");
     }
+    
     if (DFSUtil.parseHelpArgument(argv, NameNode.USAGE, System.out, true)) {
       System.exit(0);
     }
