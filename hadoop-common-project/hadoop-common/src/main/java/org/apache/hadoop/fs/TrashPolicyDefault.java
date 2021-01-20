@@ -267,6 +267,7 @@ public class TrashPolicyDefault extends TrashPolicy {
           + (this.emptierInterval / MSECS_PER_MINUTE) + " minutes.");
     }
 
+    // 垃圾清理
     @Override
     public void run() {
       if (emptierInterval == 0)

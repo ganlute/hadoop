@@ -964,6 +964,7 @@ public class NameNode extends ReconfigurableBase implements
       try {
         haContext.writeLock();
         state.prepareToEnterState(haContext);
+        // 这里要看
         state.enterState(haContext);
       } finally {
         haContext.writeUnlock();
@@ -1978,7 +1979,9 @@ public class NameNode extends ReconfigurableBase implements
     @Override
     public void startActiveServices() throws IOException {
       try {
+        // 启动namesystem
         namesystem.startActiveServices();
+        // 启动垃圾清理
         startTrashEmptier(getConf());
       } catch (Throwable t) {
         doImmediateShutdown(t);
