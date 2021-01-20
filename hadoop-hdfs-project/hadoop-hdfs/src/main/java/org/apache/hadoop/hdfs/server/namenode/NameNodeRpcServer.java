@@ -2277,6 +2277,7 @@ public class NameNodeRpcServer implements NamenodeProtocols {
     }
   }
 
+  // 判断nn是否启动
   private void checkNNStartup() throws IOException {
     if (!this.nn.isStarted()) {
       String message = NameNode.composeNotStartedMessage(this.nn.getRole());

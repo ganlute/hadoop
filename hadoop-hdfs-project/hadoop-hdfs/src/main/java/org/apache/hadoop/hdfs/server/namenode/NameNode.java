@@ -952,11 +952,14 @@ public class NameNode extends ReconfigurableBase implements
           + " this namenode/service.", clientNamenodeAddress);
     }
     this.haEnabled = HAUtil.isHAEnabled(conf, nsId);
+    LOG.error("glennlgan NameNode haEnabled:"+haEnabled);
     state = createHAState(getStartupOption(conf));
+    LOG.error("glennlgan NameNode state:"+state);
     this.allowStaleStandbyReads = HAUtil.shouldAllowStandbyReads(conf);
     this.haContext = createHAContext();
     try {
       initializeGenericKeys(conf, nsId, namenodeId);
+      // 正式初始化
       initialize(getConf());
       try {
         haContext.writeLock();
@@ -972,6 +975,7 @@ public class NameNode extends ReconfigurableBase implements
       this.stopAtException(e);
       throw e;
     }
+    // 声明启动
     this.started.set(true);
   }
 
