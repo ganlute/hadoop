@@ -1631,16 +1631,16 @@ public class NameNode extends ReconfigurableBase implements
 
   public static NameNode createNameNode(String argv[], Configuration conf)
       throws IOException {
-    LOG.info("createNameNode " + Arrays.asList(argv));
+    LOG.info("glennlgan createNameNode:" + Arrays.asList(argv).toString());
     if (conf == null)
       conf = new HdfsConfiguration();
-    LOG.error("glennlgan createNameNode", conf.toString());
+    LOG.error("glennlgan createNameNode:" + conf.toString());
     // Parse out some generic args into Configuration.
     GenericOptionsParser hParser = new GenericOptionsParser(conf, argv);
     argv = hParser.getRemainingArgs();
     // Parse the rest, NN specific args.
     if (argv != null) {
-      LOG.error("glennlgan createNameNode", argv.toString());
+      LOG.error("glennlgan createNameNode argv != null:" + argv.toString());
     }else {
       LOG.error("glennlgan createNameNode argv == null");
     }
@@ -1761,7 +1761,7 @@ public class NameNode extends ReconfigurableBase implements
   // nameNode启动入口
   public static void main(String argv[]) throws Exception {
     if (null !=  argv) {
-      LOG.error("glennlgan study:", argv.toString());
+      LOG.error("glennlgan study:" + argv.toString());
     }else {
       LOG.error("glennlgan study:");
     }
