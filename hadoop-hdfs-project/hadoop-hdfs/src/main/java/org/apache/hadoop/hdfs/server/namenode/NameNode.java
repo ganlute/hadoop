@@ -1631,7 +1631,9 @@ public class NameNode extends ReconfigurableBase implements
 
   public static NameNode createNameNode(String argv[], Configuration conf)
       throws IOException {
-    LOG.info("glennlgan createNameNode:" + Arrays.asList(argv).toString());
+    for (String arg : argv) {
+      LOG.error("glennlgan createNameNode arg:" + arg);
+    }
     if (conf == null)
       conf = new HdfsConfiguration();
     LOG.error("glennlgan createNameNode:" + conf.toString());
@@ -1639,12 +1641,11 @@ public class NameNode extends ReconfigurableBase implements
     GenericOptionsParser hParser = new GenericOptionsParser(conf, argv);
     argv = hParser.getRemainingArgs();
     // Parse the rest, NN specific args.
-    if (argv != null) {
-      LOG.error("glennlgan createNameNode argv != null:" + argv.toString());
-    }else {
-      LOG.error("glennlgan createNameNode argv == null");
+    for (String arg : argv) {
+      LOG.error("glennlgan createNameNode getRemainingArgs arg:" + arg);
     }
     StartupOption startOpt = parseArguments(argv);
+    LOG.error("glennlgan createNameNode startOpt:" + startOpt.toString());
     if (startOpt == null) {
       printUsage(System.err);
       return null;
@@ -1760,10 +1761,8 @@ public class NameNode extends ReconfigurableBase implements
    */
   // nameNode启动入口
   public static void main(String argv[]) throws Exception {
-    if (null !=  argv) {
-      LOG.error("glennlgan study:" + argv.toString());
-    }else {
-      LOG.error("glennlgan study:");
+    for (String arg : argv) {
+      LOG.error("glennlgan main arg:" + arg);
     }
     if (DFSUtil.parseHelpArgument(argv, NameNode.USAGE, System.out, true)) {
       System.exit(0);
