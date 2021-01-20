@@ -1761,6 +1761,7 @@ public class NameNode extends ReconfigurableBase implements
    */
   // nameNode启动入口
   public static void main(String argv[]) throws Exception {
+    LOG.error("glennlgan main arg len:" + argv.length);
     for (String arg : argv) {
       LOG.error("glennlgan main arg:" + arg);
     }
