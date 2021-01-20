@@ -931,17 +931,22 @@ public class NameNode extends ReconfigurableBase implements
   protected NameNode(Configuration conf, NamenodeRole role)
       throws IOException {
     super(conf);
+    // tracerConfigurationManager是干嘛的？
     this.tracer = new Tracer.Builder("NameNode").
         conf(TraceUtils.wrapHadoopConf(NAMENODE_HTRACE_PREFIX, conf)).
         build();
     this.tracerConfigurationManager =
         new TracerConfigurationManager(NAMENODE_HTRACE_PREFIX, conf);
     this.role = role;
+
+    // dfs.nameservice.id
     String nsId = getNameServiceId(conf);
+    LOG.error("glennlgan NameNode nsId:"+nsId);
     String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    LOG.error("glennlgan NameNode namenodeId:"+namenodeId);
     clientNamenodeAddress = NameNodeUtils.getClientNamenodeAddress(
         conf, nsId);
-
+    LOG.error("glennlgan NameNode clientNamenodeAddress:"+clientNamenodeAddress);
     if (clientNamenodeAddress != null) {
       LOG.info("Clients should use {} to access"
           + " this namenode/service.", clientNamenodeAddress);

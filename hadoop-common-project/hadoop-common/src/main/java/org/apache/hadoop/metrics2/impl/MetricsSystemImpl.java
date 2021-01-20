@@ -98,7 +98,7 @@ public class MetricsSystemImpl extends MetricsSystem implements MetricsSource {
   private final List<MetricsTag> injectedTags;
 
   // Things that are changed by init()/start()/stop()
-  private String prefix;
+  private String prefix; // metric name
   private MetricsFilter sourceFilter;
   private MetricsConfig config;
   private Map<String, MetricsConfig> sourceConfigs, sinkConfigs;
