@@ -1639,6 +1639,11 @@ public class NameNode extends ReconfigurableBase implements
     GenericOptionsParser hParser = new GenericOptionsParser(conf, argv);
     argv = hParser.getRemainingArgs();
     // Parse the rest, NN specific args.
+    if (argv != null) {
+      LOG.error("glennlgan createNameNode", argv.toString());
+    }else {
+      LOG.error("glennlgan createNameNode argv == null");
+    }
     StartupOption startOpt = parseArguments(argv);
     if (startOpt == null) {
       printUsage(System.err);
