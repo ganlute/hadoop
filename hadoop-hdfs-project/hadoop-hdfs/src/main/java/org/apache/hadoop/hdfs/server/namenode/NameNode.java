@@ -70,7 +70,6 @@ import org.apache.hadoop.hdfs.server.protocol.NamenodeProtocol;
 import org.apache.hadoop.hdfs.server.protocol.NamenodeProtocols;
 import org.apache.hadoop.hdfs.server.protocol.NamenodeRegistration;
 import org.apache.hadoop.hdfs.server.protocol.NamespaceInfo;
-import org.apache.hadoop.hdfs.tools.LogTest;
 import org.apache.hadoop.ipc.ExternalCall;
 import org.apache.hadoop.ipc.RefreshCallQueueProtocol;
 import org.apache.hadoop.ipc.RetriableException;
@@ -728,6 +727,7 @@ public class NameNode extends ReconfigurableBase implements
       httpServer.setFSImage(getFSImage());
     }
 
+    // namenode启动核心逻辑
     startCommonServices(conf);
     startMetricsLogger(conf);
   }
@@ -801,6 +801,7 @@ public class NameNode extends ReconfigurableBase implements
   }
 
   /** Start the services common to active and standby states */
+  // nameNode启动核心逻辑
   private void startCommonServices(Configuration conf) throws IOException {
     namesystem.startCommonServices(conf, haContext);
     registerNNSMXBean();
@@ -1633,6 +1634,7 @@ public class NameNode extends ReconfigurableBase implements
     LOG.info("createNameNode " + Arrays.asList(argv));
     if (conf == null)
       conf = new HdfsConfiguration();
+    LOG.error("glennlgan createNameNode", conf.toString());
     // Parse out some generic args into Configuration.
     GenericOptionsParser hParser = new GenericOptionsParser(conf, argv);
     argv = hParser.getRemainingArgs();
@@ -1758,7 +1760,6 @@ public class NameNode extends ReconfigurableBase implements
     }else {
       LOG.error("glennlgan study:");
     }
-    
     if (DFSUtil.parseHelpArgument(argv, NameNode.USAGE, System.out, true)) {
       System.exit(0);
     }

@@ -253,6 +253,7 @@ public class NameNodeRpcServer implements NamenodeProtocols {
   private final InetSocketAddress serviceRPCAddress;
 
   /** The RPC server that listens to lifeline requests */
+  // Lifeline本质上是一次轻量级的块信息的汇报，它不需要等待NameNode的回复结果，同时它能达到DataNode状态检查的目的。
   private final RPC.Server lifelineRpcServer;
   private final InetSocketAddress lifelineRPCAddress;
   

@@ -656,6 +656,8 @@ public class NetUtils {
    * The returned hostname String format is "hostname/ip address".
    * @return hostname
    */
+  // get hostname from cache first
+  // if not exist, get hostname by native method
   public static String getHostname() {
     try {return "" + InetAddress.getLocalHost();}
     catch(UnknownHostException uhe) {return "" + uhe;}
