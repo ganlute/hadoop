@@ -128,8 +128,9 @@ public class NameNodeHttpServer {
    */
   void start() throws IOException {
     HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    HttpServer2.LOG.error("glennlgan start  policy:"+ policy.toString());
     final String infoHost = bindAddress.getHostName();
-
+    HttpServer2.LOG.error("glennlgan start infoHost:"+ infoHost);
     final InetSocketAddress httpAddr = bindAddress;
     final String httpsAddrString = conf.getTrimmed(
         DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
@@ -178,6 +179,7 @@ public class NameNodeHttpServer {
     httpServer.setAttribute(NAMENODE_ATTRIBUTE_KEY, nn);
     httpServer.setAttribute(JspHelper.CURRENT_CONF, conf);
     setupServlets(httpServer, conf);
+    // 本质上就是个jetty server
     httpServer.start();
 
     int connIdx = 0;
@@ -287,10 +289,12 @@ public class NameNodeHttpServer {
    * 
    * @param prog StartupProgress to set
    */
+  // 这里为啥要这样子设置一下？
   void setStartupProgress(StartupProgress prog) {
     httpServer.setAttribute(STARTUP_PROGRESS_ATTRIBUTE_KEY, prog);
   }
 
+  // path
   private static void setupServlets(HttpServer2 httpServer, Configuration conf) {
     httpServer.addInternalServlet("startupProgress",
         StartupProgressServlet.PATH_SPEC, StartupProgressServlet.class);

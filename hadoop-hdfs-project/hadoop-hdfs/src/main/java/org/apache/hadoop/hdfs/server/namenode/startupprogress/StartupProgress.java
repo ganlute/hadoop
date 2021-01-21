@@ -46,6 +46,7 @@ import org.apache.hadoop.classification.InterfaceAudience;
  * For read access, call {@link #createView()} to create a consistent view with
  * a clone of the data.
  */
+// 
 @InterfaceAudience.Private
 public class StartupProgress {
   // package-private for access by StartupProgressView

@@ -662,6 +662,19 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
     final Collection<URI> sharedEditsDirs =
         FSNamesystem.getSharedEditsDirs(conf);
 
+    for (URI namespaceDir : namespaceDirs) {
+      LOG.error("glennlgan checkConfiguration namespaceDirs: "+namespaceDir.toString());
+    }
+    for (URI editsDir : editsDirs) {
+      LOG.error("glennlgan checkConfiguration editsDir: "+editsDir.toString());
+    }
+    for (URI requiredEditsDir : requiredEditsDirs) {
+      LOG.error("glennlgan checkConfiguration requiredEditsDir: "+requiredEditsDir.toString());
+    }
+    for (URI sharedEditsDir : sharedEditsDirs) {
+      LOG.error("glennlgan checkConfiguration sharedEditsDir: "+sharedEditsDir.toString());
+    }
+
     for (URI u : requiredEditsDirs) {
       if (u.toString().compareTo(
               DFSConfigKeys.DFS_NAMENODE_EDITS_DIR_DEFAULT) == 0) {

@@ -382,6 +382,9 @@ public class NameNode extends ReconfigurableBase implements
       LogFactory.getLog("NameNodeMetricsLog");
 
   protected FSNamesystem namesystem;
+  //    NAMENODE  ("NameNode"),
+  //    BACKUP    ("Backup Node"),
+  //    CHECKPOINT("Checkpoint Node");
   protected final NamenodeRole role;
   private volatile HAState state;
   private final boolean haEnabled;
@@ -701,18 +704,24 @@ public class NameNode extends ReconfigurableBase implements
     // init namenode Metrics and jvm Metrics
     NameNode.initMetrics(conf, this.getRole());
     // 这里发现所有监控都是通过 MetricsSystem(DefaultMetricsSystem).register 的方式建立起来的
+    // 给StartupProgress建立监控
     StartupProgressMetrics.register(startupProgress);
     LOG.error("glennlgan initialize startupProgress:" + startupProgress.toString());
-    // pauseMonitor ??
+    // pauseMonitor 也是个监控用的
     pauseMonitor = new JvmPauseMonitor();
     pauseMonitor.init(conf);
     pauseMonitor.start();
     metrics.getJvmMetrics().setPauseMonitor(pauseMonitor);
 
+    LOG.error("glennlgan role = ?:"+role.toString());
     if (NamenodeRole.NAMENODE == role) {
+      // 如果namenode，就开启http server
+      // 这个方法其实也只会被namenode调用
+      LOG.error("glennlgan this is a namenode");
       startHttpServer(conf);
     }
 
+    // 加载元数据
     loadNamesystem(conf);
     startAliasMapServerIfNecessary(conf);
 
@@ -733,7 +742,6 @@ public class NameNode extends ReconfigurableBase implements
       httpServer.setFSImage(getFSImage());
     }
 
-    // namenode启动核心逻辑
     startCommonServices(conf);
     startMetricsLogger(conf);
   }
@@ -807,7 +815,6 @@ public class NameNode extends ReconfigurableBase implements
   }
 
   /** Start the services common to active and standby states */
-  // nameNode启动核心逻辑
   private void startCommonServices(Configuration conf) throws IOException {
     namesystem.startCommonServices(conf, haContext);
     registerNNSMXBean();
@@ -890,6 +897,7 @@ public class NameNode extends ReconfigurableBase implements
 
   private void startHttpServer(final Configuration conf) throws IOException {
     httpServer = new NameNodeHttpServer(conf, this, getHttpServerBindAddress(conf));
+    // 启动
     httpServer.start();
     httpServer.setStartupProgress(startupProgress);
   }
