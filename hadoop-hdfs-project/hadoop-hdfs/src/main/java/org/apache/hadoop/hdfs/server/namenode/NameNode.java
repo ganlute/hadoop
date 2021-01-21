@@ -692,12 +692,18 @@ public class NameNode extends ReconfigurableBase implements
       }
     }
 
+    // 这里做的都是安全认证相关的初始化
     UserGroupInformation.setConfiguration(conf);
+    // 权限登陆
     loginAsNameNodeUser(conf);
 
+    // this.getRole() = NamenodeRole.NAMENODE
+    // init namenode Metrics and jvm Metrics
     NameNode.initMetrics(conf, this.getRole());
+    // 这里发现所有监控都是通过 MetricsSystem(DefaultMetricsSystem).register 的方式建立起来的
     StartupProgressMetrics.register(startupProgress);
-
+    LOG.error("glennlgan initialize startupProgress:" + startupProgress.toString());
+    // pauseMonitor ??
     pauseMonitor = new JvmPauseMonitor();
     pauseMonitor.init(conf);
     pauseMonitor.start();

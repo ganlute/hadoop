@@ -74,13 +74,16 @@ public class HadoopKerberosName extends KerberosName {
         break;
       default:
         // just extract the simple user name
+        // default rule
         defaultRule = "RULE:[1:$1] RULE:[2:$1]";
         break; 
     }
     String ruleString = conf.get(HADOOP_SECURITY_AUTH_TO_LOCAL, defaultRule);
+    // setRules
     setRules(ruleString);
 
     String ruleMechanism = conf.get(HADOOP_SECURITY_AUTH_TO_LOCAL_MECHANISM,  DEFAULT_MECHANISM);
+    // set setRuleMechanism
     setRuleMechanism(ruleMechanism);
   }
 

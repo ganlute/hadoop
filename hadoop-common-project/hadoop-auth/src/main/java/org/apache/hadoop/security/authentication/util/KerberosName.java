@@ -92,6 +92,7 @@ public class KerberosName {
   /**
    * The list of translation rules.
    */
+  // security rule
   private static List<Rule> rules;
 
   /**
