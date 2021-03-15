@@ -995,6 +995,7 @@ public class NNStorage extends Storage implements Closeable,
     while(sdit.hasNext()) {
       StorageDirectory sd = sdit.next();
       try {
+        // 从current目录获取VERSION
         Properties props = readPropertiesFile(sd.getVersionFile());
         if (props == null) {
           cid = null;

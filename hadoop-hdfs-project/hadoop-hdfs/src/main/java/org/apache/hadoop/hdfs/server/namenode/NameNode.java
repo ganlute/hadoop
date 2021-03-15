@@ -721,12 +721,17 @@ public class NameNode extends ReconfigurableBase implements
       startHttpServer(conf);
     }
 
-    // 加载元数据
+    // 加载元数据？
     loadNamesystem(conf);
+
+    // aliasMapServer
     startAliasMapServerIfNecessary(conf);
 
+    // init serviceRpcServer、clientRpcServer、lifelineRpcServer
+    // not start
     rpcServer = createRpcServer(conf);
 
+    // 这是个啥？
     initReconfigurableBackoffKey();
 
     if (clientNamenodeAddress == null) {
@@ -741,8 +746,9 @@ public class NameNode extends ReconfigurableBase implements
       httpServer.setNameNodeAddress(getNameNodeAddress());
       httpServer.setFSImage(getFSImage());
     }
-
+    // rpcServer start
     startCommonServices(conf);
+    // 开启 MetricsLogger 任务
     startMetricsLogger(conf);
   }
 

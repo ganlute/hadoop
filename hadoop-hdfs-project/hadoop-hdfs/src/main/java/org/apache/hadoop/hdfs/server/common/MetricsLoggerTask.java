@@ -81,6 +81,7 @@ public class MetricsLoggerTask implements Runnable {
     }
 
     metricsLog.info(" >> Begin " + nodeName + " metrics dump");
+    // MBeanServer
     final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
 
     // Iterate over each MBean.

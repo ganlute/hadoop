@@ -462,7 +462,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
   private final List<AuditLogger> auditLoggers;
 
   /** The namespace tree. */
-  FSDirectory dir;
+  FSDirectory dir; // HDFS中所有目录结构和属性
   private BlockManager blockManager;
   private final SnapshotManager snapshotManager;
   private final CacheManager cacheManager;
@@ -719,9 +719,11 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
   static FSNamesystem loadFromDisk(Configuration conf) throws IOException {
 
     checkConfiguration(conf);
+    // 初始化fsImage
     FSImage fsImage = new FSImage(conf,
         FSNamesystem.getNamespaceDirs(conf),
         FSNamesystem.getNamespaceEditsDirs(conf));
+    // 初始化namesystem
     FSNamesystem namesystem = new FSNamesystem(conf, fsImage, false);
     StartupOption startOpt = NameNode.getStartupOption(conf);
     if (startOpt == StartupOption.RECOVER) {
@@ -1105,6 +1107,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
     // format before starting up if requested
     if (startOpt == StartupOption.FORMAT) {
       // reuse current id
+      // 新集群的话-->fsImage.getStorage().determineClusterId()返回值肯定是null吧
       fsImage.format(this, fsImage.getStorage().determineClusterId(), false);
 
       startOpt = StartupOption.REGULAR;
