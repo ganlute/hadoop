@@ -721,7 +721,8 @@ public class NameNode extends ReconfigurableBase implements
       startHttpServer(conf);
     }
 
-    // 加载元数据？
+    // 加载元数据
+    // 加载fsimage + fseditlog
     loadNamesystem(conf);
 
     // aliasMapServer
@@ -744,6 +745,7 @@ public class NameNode extends ReconfigurableBase implements
     }
     if (NamenodeRole.NAMENODE == role) {
       httpServer.setNameNodeAddress(getNameNodeAddress());
+      // 为什么httpServer需要FSImage
       httpServer.setFSImage(getFSImage());
     }
     // rpcServer start
@@ -980,11 +982,13 @@ public class NameNode extends ReconfigurableBase implements
     try {
       initializeGenericKeys(conf, nsId, namenodeId);
       // 正式初始化
+      LOG.error("glennlgan NameNode initialize");
       initialize(getConf());
       try {
         haContext.writeLock();
         state.prepareToEnterState(haContext);
         // 这里要看
+        LOG.error("glennlgan haContext haContext:"+haContext.toString());
         state.enterState(haContext);
       } finally {
         haContext.writeUnlock();
@@ -1727,6 +1731,7 @@ public class NameNode extends ReconfigurableBase implements
       terminate(0);
       return null;
     default:
+      LOG.error("glennlgan new NameNode");
       DefaultMetricsSystem.initialize("NameNode");
       // 初始化NameNode
       return new NameNode(conf);
