@@ -718,9 +718,10 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
    * @throws IOException if loading fails
    */
   static FSNamesystem loadFromDisk(Configuration conf) throws IOException {
-    LOG.error("FSNamesystem loadFromDisk conf:"+conf.toString());
+    LOG.error("glennlgan FSNamesystem loadFromDisk conf:"+conf.toString());
     checkConfiguration(conf);
     // 初始化fsImage
+    LOG.error("glennlgan new FSNamesystem ");
     FSImage fsImage = new FSImage(conf,
         FSNamesystem.getNamespaceDirs(conf),
         FSNamesystem.getNamespaceEditsDirs(conf));
