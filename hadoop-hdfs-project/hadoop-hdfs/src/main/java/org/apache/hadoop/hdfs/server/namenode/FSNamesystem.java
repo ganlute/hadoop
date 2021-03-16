@@ -594,6 +594,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
    * it is imageLoaded for use
    */
   void imageLoadComplete() {
+    LOG.info("glennlgan loading FSDirectory  is complete");
     Preconditions.checkState(!imageLoaded, "FSDirectory already loaded");
     setImageLoaded();
   }
@@ -733,6 +734,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
 
     long loadStart = monotonicNow();
     try {
+
       namesystem.loadFSImage(startOpt);
     } catch (IOException ioe) {
       LOG.warn("Encountered exception loading fsimage", ioe);
@@ -1128,8 +1130,10 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
           + " (staleImage=" + staleImage + ", haEnabled=" + haEnabled
           + ", isRollingUpgrade=" + isRollingUpgrade() + ")");
       if (needToSave) {
+        LOG.info("glennlgan needToSave fsImage saveNamespace");
         fsImage.saveNamespace(this);
       } else {
+        LOG.info("glennlgan do not needToSave fsImage saveNamespace");
         // No need to save, so mark the phase done.
         StartupProgress prog = NameNode.getStartupProgress();
         prog.beginPhase(Phase.SAVING_CHECKPOINT);
