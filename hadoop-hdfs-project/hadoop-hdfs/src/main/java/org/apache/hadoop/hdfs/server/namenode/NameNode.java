@@ -648,6 +648,7 @@ public class NameNode extends ReconfigurableBase implements
   }
 
   protected void loadNamesystem(Configuration conf) throws IOException {
+    LOG.error("protected void loadNamesystem conf:"+conf.toString());
     this.namesystem = FSNamesystem.loadFromDisk(conf);
   }
 
@@ -706,7 +707,7 @@ public class NameNode extends ReconfigurableBase implements
     // 这里发现所有监控都是通过 MetricsSystem(DefaultMetricsSystem).register 的方式建立起来的
     // 给StartupProgress建立监控
     StartupProgressMetrics.register(startupProgress);
-    LOG.error("glennlgan initialize startupProgress:" + startupProgress.toString());
+    LOG.error("glennlgan initialize startupProgress" );
     // pauseMonitor 也是个监控用的
     pauseMonitor = new JvmPauseMonitor();
     pauseMonitor.init(conf);
@@ -723,6 +724,7 @@ public class NameNode extends ReconfigurableBase implements
 
     // 加载元数据
     // 加载fsimage + fseditlog
+    LOG.error("glennlgan loadNamesystem");
     loadNamesystem(conf);
 
     // aliasMapServer
@@ -988,7 +990,6 @@ public class NameNode extends ReconfigurableBase implements
         haContext.writeLock();
         state.prepareToEnterState(haContext);
         // 这里要看
-        LOG.error("glennlgan haContext haContext:"+haContext.toString());
         state.enterState(haContext);
       } finally {
         haContext.writeUnlock();
