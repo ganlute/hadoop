@@ -174,7 +174,7 @@ public class NNStorage extends Storage implements Closeable,
       throws IOException {
     super(NodeType.NAME_NODE);
     this.conf = conf;
-
+    LOG.error("glennlgan setStorageDirectories");
     // this may modify the editsDirs, so copy before passing in
     setStorageDirectories(imageDirs, 
                           Lists.newArrayList(editsDirs),

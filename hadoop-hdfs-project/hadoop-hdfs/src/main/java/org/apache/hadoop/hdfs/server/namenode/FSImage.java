@@ -163,7 +163,7 @@ public class FSImage implements Closeable {
                     List<URI> editsDirs)
       throws IOException {
     this.conf = conf;
-
+    LOG.error("glennlgan NNStorage");
     storage = new NNStorage(conf, imageDirs, editsDirs);
     if(conf.getBoolean(DFSConfigKeys.DFS_NAMENODE_NAME_DIR_RESTORE_KEY,
                        DFSConfigKeys.DFS_NAMENODE_NAME_DIR_RESTORE_DEFAULT)) {
@@ -172,6 +172,7 @@ public class FSImage implements Closeable {
 
     this.editLog = FSEditLog.newInstance(conf, storage, editsDirs);
     archivalManager = new NNStorageRetentionManager(conf, storage, editLog);
+    LOG.error("glennlgan FSImage end");
   }
  
   void format(FSNamesystem fsn, String clusterId, boolean force)

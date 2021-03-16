@@ -727,6 +727,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
         FSNamesystem.getNamespaceEditsDirs(conf));
 
     // 初始化namesystem
+
     FSNamesystem namesystem = new FSNamesystem(conf, fsImage, false);
     StartupOption startOpt = NameNode.getStartupOption(conf);
     if (startOpt == StartupOption.RECOVER) {
@@ -735,7 +736,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
 
     long loadStart = monotonicNow();
     try {
-
+      LOG.error("glennlgan namesystem loadFSImage ");
       namesystem.loadFSImage(startOpt);
     } catch (IOException ioe) {
       LOG.warn("Encountered exception loading fsimage", ioe);
@@ -1107,7 +1108,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
 
   private void loadFSImage(StartupOption startOpt) throws IOException {
     final FSImage fsImage = getFSImage();
-
+    LOG.info("glennlgan loadFSImage ");
     // format before starting up if requested
     if (startOpt == StartupOption.FORMAT) {
       // reuse current id
@@ -1117,6 +1118,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
       startOpt = StartupOption.REGULAR;
     }
     boolean success = false;
+    LOG.info("glennlgan loadFSImage writeLock");
     writeLock();
     try {
       // We shouldn't be calling saveNamespace if we've come up in standby state.
