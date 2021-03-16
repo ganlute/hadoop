@@ -594,7 +594,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
    * it is imageLoaded for use
    */
   void imageLoadComplete() {
-    LOG.info("glennlgan loading FSDirectory  is complete");
+    LOG.error("glennlgan loading FSDirectory  is complete");
     Preconditions.checkState(!imageLoaded, "FSDirectory already loaded");
     setImageLoaded();
   }
@@ -1108,7 +1108,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
 
   private void loadFSImage(StartupOption startOpt) throws IOException {
     final FSImage fsImage = getFSImage();
-    LOG.info("glennlgan loadFSImage ");
+    LOG.error("glennlgan loadFSImage ");
     // format before starting up if requested
     if (startOpt == StartupOption.FORMAT) {
       // reuse current id
@@ -1118,7 +1118,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
       startOpt = StartupOption.REGULAR;
     }
     boolean success = false;
-    LOG.info("glennlgan loadFSImage writeLock");
+    LOG.error("glennlgan loadFSImage writeLock");
     writeLock();
     try {
       // We shouldn't be calling saveNamespace if we've come up in standby state.
@@ -1133,10 +1133,10 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
           + " (staleImage=" + staleImage + ", haEnabled=" + haEnabled
           + ", isRollingUpgrade=" + isRollingUpgrade() + ")");
       if (needToSave) {
-        LOG.info("glennlgan needToSave fsImage saveNamespace");
+        LOG.error("glennlgan needToSave fsImage saveNamespace");
         fsImage.saveNamespace(this);
       } else {
-        LOG.info("glennlgan do not needToSave fsImage saveNamespace");
+        LOG.error("glennlgan do not needToSave fsImage saveNamespace");
         // No need to save, so mark the phase done.
         StartupProgress prog = NameNode.getStartupProgress();
         prog.beginPhase(Phase.SAVING_CHECKPOINT);
@@ -1146,6 +1146,7 @@ public class FSNamesystem implements Namesystem, FSNamesystemMBean,
       // we shouldn't do it when coming up in standby state
       if (!haEnabled || (haEnabled && startOpt == StartupOption.UPGRADE)
           || (haEnabled && startOpt == StartupOption.UPGRADEONLY)) {
+        LOG.error("glennlgan openEditLogForWrite getEffectiveLayoutVersion : "+ getEffectiveLayoutVersion());
         fsImage.openEditLogForWrite(getEffectiveLayoutVersion());
       }
       success = true;

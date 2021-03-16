@@ -227,7 +227,7 @@ public class FSImage implements Closeable {
       throws IOException {
     assert startOpt != StartupOption.FORMAT : 
       "NameNode formatting should be performed before reading the image";
-    
+    LOG.error("glennlgan recoverTransitionRead");
     Collection<URI> imageDirs = storage.getImageDirectories();
     Collection<URI> editsDirs = editLog.getEditURIs();
 
@@ -672,6 +672,7 @@ public class FSImage implements Closeable {
   private boolean loadFSImage(FSNamesystem target, StartupOption startOpt,
       MetaRecoveryContext recovery)
       throws IOException {
+    LOG.error("glennlgan loadFSImage");
     final boolean rollingRollback
         = RollingUpgradeStartupOption.ROLLBACK.matches(startOpt);
     final EnumSet<NameNodeFile> nnfs;
@@ -1123,7 +1124,7 @@ public class FSImage implements Closeable {
           StartupOption.REGULAR);
       FSImageFile image = inspector.getLatestImages().get(0);
       File imageFile = image.getFile();
-
+      LOG.error("glennlgan imageFile Name:",imageFile.getName());
       final long checkpointTxId = image.getCheckpointTxId();
       final long checkpointAge = Time.now() - imageFile.lastModified();
       if (checkpointAge <= timeWindow * 1000 &&
